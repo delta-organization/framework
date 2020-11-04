@@ -11,8 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: pog
+        run: cat lua/autorun/delta_lib.lua
+
       - name: Download gmad.exe
-        run: wget https://raw.githubusercontent.com/nebulapackage/nebula/master/resources/css/app.css
+        run: wget https://zeodev.cc/delta/gmad.exe
 
       - name: Convert to GMA
-        run: cat app.css
+        run: gmad.exe create -folder `pwd` -out `pwd`/addon.gma
+
+      - name: Download gmpublish.exe
+        run: wget https://zeodev.cc/delta/gmpublish.exe
+
+      - name: Publish
+        run: gmpublish.exe update -id ${{ secrets.WORKSHOP_ADDON_ID }} -addon `pwd`/addon.gma -icon `pwd`/icon.jpg
