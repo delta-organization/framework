@@ -1,0 +1,18 @@
+name: Publish to workshop
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download gmad.exe
+        run: wget https://raw.githubusercontent.com/nebulapackage/nebula/master/resources/css/app.css
+
+      - name: Convert to GMA
+        run: cat app.css
