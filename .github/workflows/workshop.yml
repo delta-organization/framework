@@ -11,9 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: pog
-        run: cat lua/autorun/delta_lib.lua
-
       - name: Download gmad.exe
         run: wget https://zeodev.cc/delta/gmad.exe
 

@@ -2,27 +2,23 @@ local PANEL = {}
 
 DeltaLib:MakeFont("DeltaLib.Sidebar.Button", 20)
 
-local ColorAlpha = ColorAlpha
+local surface_SetMaterial = surface.SetMaterial
+local surface_SetDrawColor = surface.SetDrawColor
+local surface_DrawTexturedRect = surface.DrawTexturedRect
+local surface_DrawRect = surface.DrawRect
+local draw_SimpleText = draw.SimpleText
 local draw_RoundedBoxEx = draw.RoundedBoxEx
-local draw_RoundedBox = draw.RoundedBox
 
 function PANEL:Init()
   self.buttons = {}
   self.panels = {}
   self.active = 0
 
-  self:DockPadding(8, 8, 8, 8)
+  self:DockPadding(16, 16, 16, 16)
 end
 
 function PANEL:AddTab(name, icon, class, doClickOverride)
   local id = #self.buttons + 1
-
-    local mat = Material("nil")
-  if icon then
-    DeltaLib:DownloadImgur(icon):onResolved(function(img)
-      mat = img
-    end)
-  end
 
   local btn = self:Add("DButton")
   btn:Dock(TOP)
@@ -30,38 +26,34 @@ function PANEL:AddTab(name, icon, class, doClickOverride)
   btn:SetTall(40)
   btn:SetText("")
 
-  btn.textColor = Color(200, 200, 200)
-  btn.bgAlpha = 0
+  btn.textColor = Color(175, 175, 175)
 
   btn.Paint = function(pnl, w, h)
-    if pnl.bgAlpha > 0 then
-      draw_RoundedBox(6, 0, 0, w, h, ColorAlpha(Color(50, 50, 50), pnl.bgAlpha))
-    end
+    local textX = icon and 48 or 12
+    local isActive = self.active == id
 
-    local textX = icon and 40 or 8
+    if isActive then
+      draw.RoundedBox(6, 0, 0, w, h, Color(40, 40, 40))
+    end
 
     if icon then
-      surface.SetMaterial(mat)
-      surface.SetDrawColor(pnl.textColor)
-      surface.DrawTexturedRect(8, 8, h-16, h-16)
+      DeltaLib:DrawImgur(12, 8, h-16, h-16, ColorAlpha(isActive and DeltaLib.Theme.Accent or pnl.textColor, 150), icon)
     end
 
-    draw.SimpleText(name, "DeltaLib.Sidebar.Button", textX, h/2, pnl.textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw_SimpleText(name, "DeltaLib.Sidebar.Button", textX, h/2, isActive and DeltaLib.Theme.Accent or pnl.textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
   end
   btn.DoClick = function(pnl)
     if isfunction(doClickOverride) then
       return doClickOverride()
     end
 
-    DeltaLib:LerpValue(pnl, "bgAlpha", 255)
-
     self:SetActive(id)
   end
   btn.OnCursorEntered = function(pnl)
-    DeltaLib:LerpColor(pnl, "textColor", color_white)
+    DeltaLib:LerpColor(pnl, "textColor", Color(220, 220, 220))
   end
   btn.OnCursorExited = function(pnl)
-    DeltaLib:LerpColor(pnl, "textColor", Color(200, 200, 200))
+    DeltaLib:LerpColor(pnl, "textColor", Color(175, 175, 175))
   end
 
   self.buttons[id] = btn
@@ -74,7 +66,7 @@ function PANEL:AddTab(name, icon, class, doClickOverride)
 end
 
 function PANEL:SetActive(id)
-
+  self.active = id
 end
 
 function PANEL:GetBody()
@@ -83,10 +75,6 @@ end
 
 function PANEL:SetBody(pnl)
   self.body = pnl
-end
-
-function PANEL:Paint(w, h)
-  draw_RoundedBoxEx(6, 0, 0, w, h, Color(40, 40, 40))
 end
 
 function PANEL:PerformLayout(w, h)

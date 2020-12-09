@@ -2,16 +2,16 @@ local PANEL = {}
 
 local surface_SetDrawColor = surface.SetDrawColor
 local surface_DrawRect = surface.DrawRect
+local draw_RoundedBox = draw.RoundedBox
 
 DeltaLib:MakeFont("DeltaLib.Navbar.Button", 22)
 
 function PANEL:Init()
+  self:DockPadding(8, 8, 8, 8)
+
   self.buttons = {}
   self.panels = {}
   self.active = 0
-
-  self.lineX = 0
-  self.lineW = 0
 end
 
 function PANEL:AddTab(name, class, dockRight)
@@ -19,31 +19,34 @@ function PANEL:AddTab(name, class, dockRight)
 
   local btn = self:Add("DButton")
   btn:Dock(dockRight and RIGHT or LEFT)
+  btn:DockMargin(dockRight and 8 or 0, 0, dockRight and 0 or 8, 0)
   btn:SetText(name)
   btn:SetFont("DeltaLib.Navbar.Button")
-  btn:SetTextColor(Color(200, 200, 200))
-  btn:SizeToContentsX(40)
+  btn:SizeToContentsX(20)
 
   surface.SetFont("DeltaLib.Navbar.Button")
   btn.textWidth = surface.GetTextSize(name)
+  btn.textColor = Color(175, 175, 175)
 
   btn.Paint = function(pnl, w, h)
+    pnl:SetTextColor(self.active == id and color_white or pnl.textColor)
 
+    if self.active == id then
+      draw_RoundedBox(6, 0, 0, w, h, Color(60, 60, 60))
+    end
   end
   btn.DoClick = function(pnl)
     self:SetActive(id)
   end
   btn.OnCursorEntered = function(pnl)
-    if self.active ~= id then return end
+    if self.active == id then return end
 
-    DeltaLib:LerpValue(self, "lineX", pnl:GetPos())
-    DeltaLib:LerpValue(self, "lineW", pnl:GetWide())
+    DeltaLib:LerpColor(pnl, "textColor", Color(220, 220, 220))
   end
   btn.OnCursorExited = function(pnl)
-    if self.active ~= id then return end
+    if self.active == id then return end
 
-    DeltaLib:LerpValue(self, "lineX", pnl:GetPos() + (pnl:GetWide() - pnl.textWidth) / 2)
-    DeltaLib:LerpValue(self, "lineW", pnl.textWidth)
+    DeltaLib:LerpColor(pnl, "textColor", Color(175, 175, 175))
   end
 
   self.buttons[id] = btn
@@ -67,14 +70,6 @@ function PANEL:SetActive(id, noAnim)
 
   panel:SetVisible(true)
 
-  -- Line animation
-  if not noAnim then
-    local btn = self.buttons[id]
-
-    DeltaLib:LerpValue(self, "lineX", btn:GetPos() + (btn:GetWide() - btn.textWidth) / 2)
-    DeltaLib:LerpValue(self, "lineW", btn.textWidth)
-  end
-
   self.active = id
 end
 
@@ -87,11 +82,11 @@ function PANEL:SetBody(pnl)
 end
 
 function PANEL:Paint(w, h)
-  surface_SetDrawColor(DeltaLib.Theme.Navbar)
+  surface_SetDrawColor(DeltaLib.Theme.Header)
   surface_DrawRect(0, 0, w, h)
 
-  surface_SetDrawColor(DeltaLib.Theme.Accent)
-  surface_DrawRect(self.lineX, h - 2, self.lineW, 2)
+  surface_SetDrawColor(Color(70, 70, 70))
+  surface_DrawRect(0, 0, w, 2)
 end
 
 vgui.Register("DeltaLib.Navbar", PANEL, "EditablePanel")

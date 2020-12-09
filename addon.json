@@ -1,0 +1,6 @@
+{
+    "title": "Delta Framework",
+    "type": "ServerContent",
+    "tags": ["roleplay", "fun"],
+    "ignore": [".github/*", ".git/*", "LICENSE", "README.md"]
+}

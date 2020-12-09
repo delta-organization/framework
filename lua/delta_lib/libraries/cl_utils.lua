@@ -17,3 +17,9 @@ function DeltaLib:MakeFont(name, size, weight)
     weight = weight
   })
 end
+
+function DeltaLib:AddPanelHook(pnl, hookName, hookFunc)
+  hook.Add(hookName, pnl, function(pnl, ...)
+    return hookFunc(...)
+  end)
+end

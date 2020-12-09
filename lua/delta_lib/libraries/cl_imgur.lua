@@ -1,9 +1,10 @@
 file.CreateDir("delta_lib/imgur")
 
-local cache = {}
+local cache, queue = {}, {}
+local loadingMat = Material("delta_lib/loading.png")
 
 function DeltaLib:DownloadImgur(id)
-  local promise = self.Promises.new()
+  local promise = self.Promise.new()
   local dataPath = "delta_lib/imgur/" .. id .. ".png"
 
   if type(cache[id]) == "IMaterial" then
@@ -14,42 +15,49 @@ function DeltaLib:DownloadImgur(id)
     cache[id] = mat
     promise:resolve(mat)
   else
-    http.Fetch("https://i.imgur.com/" .. id .. ".png", function(body)
-      file.Write(dataPath, body)
-      local mat = Material("../" .. dataPath, "noclamp smooth")
+    self.Http:Get("https://i.imgur.com/" .. id .. ".png")
+      :resolved(function(body)
+        file.Write(dataPath, body)
+        local mat = Material("../" .. dataPath, "noclamp smooth")
 
-      cache[id] = mat
-      promise:resolve(mat) 
-    end, function(error)
-      promise:reject(error)
-    end)
+        cache[id] = mat
+        promise:resolve(mat) 
+      end)
+      :rejected(function(reason)
+        promise:reject(reason)
+      end)
   end
 
   return promise
 end
 
---[[ local surface_SetDrawColor = surface.SetDrawColor
+local surface_SetDrawColor = surface.SetDrawColor
 local surface_SetMaterial = surface.SetMaterial
 local surface_DrawTexturedRect = surface.DrawTexturedRect
 local surface_DrawTexturedRectRotated = surface.DrawTexturedRectRotated
+local CurTime = CurTime
 
-function DeltaLib:DrawImgur(id, x, y, w, h, color)
-  local downloaded, mat = false, Material("delta_lib/loading.png")
+function DeltaLib:DrawImgur(x, y, w, h, color, id, ang)
+  local mat
+  if not cache[id] then
+    mat = loadingMat
 
-  self:DownloadImgur(id):onResolved(function(img)
-    mat, downloaded = img, true
-  end)
+    if queue[id] then return end -- Stop if it's already downloading
 
-  surface_SetDrawColor(color or color_white)
-  surface_SetMaterial(mat)
-
-  if downloaded then
-    surface_DrawTexturedRect(x, y, w, h)
+    queue[id] = true
+    self:DownloadImgur(id):onResolved(function()
+      queue[id] = nil
+    end)
   else
-    surface_DrawTexturedRectRotated(x, y, w, h, CurTime() * 360 % 360)
+    mat = cache[id]
+  end
+
+  surface_SetMaterial(mat)
+  surface_SetDrawColor(color)
+
+  if ang and queue[id] then
+    surface_DrawTexturedRectRotated(x, y, w, h, ang and ang or (CurTime() * 360 % 360))
+  else
+    surface_DrawTexturedRect(x, y, w, h)
   end
 end
-
-hook.Add("HUDPaint", "pog", function()
-  DeltaLib:DrawImgur("VW4uzvp", 50, 50, 100, 100)
-end) ]]

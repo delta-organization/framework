@@ -44,7 +44,7 @@ function DeltaLib:LoadFolder(folder)
 end
 
 if SERVER then
-  resource.AddFile("resource/fonts/Raleway-VariableFont_wght.ttf")
+  resource.AddFile("resource/fonts/raleway-variablefont_wght.ttf")
   resource.AddFile("materials/delta_lib/loading.png")
 end
 

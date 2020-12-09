@@ -28,6 +28,10 @@ function VALIDATOR:setSchema(schema)
   self.schema = schema
 end
 
+function VALIDATOR:getRuleClass(rule)
+  return DeltaLib.Validation.Rules[rule]
+end
+
 function VALIDATOR:validate(data)
   local errors = {}
 
@@ -46,14 +50,18 @@ function VALIDATOR:validate(data)
         params = string.Explode(",", string.sub(rule, colPos + 1, #rule), false)
       end
 
-      print("-------------------")
-      print(name, #params)
-      PrintTable(params)
-      print("-------------------\n")
+      local ruleClass = self:getRuleClass(name)
+      if not ruleClass then continue end
+
+      if not rule:test() then
+        errors[k][name] = rule:formatErrorMessage()
+      end
+
+      if ruleClass.stopsFurtherChecks then break end
     end
   end
 
-  return #errors == 0, errors
+  return table.Count(errors) == 0, errors
 end
 
 DeltaLib.Validation.Validator = VALIDATOR
