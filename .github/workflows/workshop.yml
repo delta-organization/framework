@@ -14,6 +14,9 @@ jobs:
       - name: Install 32-bit binaries
         run: sudo apt install lib32gcc1 lib32stdc++6
 
+      - name: Set permissions for gmad_linux
+        run: chmod +x ./.github/bin/gmad_linux
+
       - name: Convert to GMA
         run: ./.github/bin/gmad_linux create -folder $PWD -out "$PWD/addon.gma"
 
