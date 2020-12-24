@@ -2,5 +2,5 @@
     "title": "Delta Framework",
     "type": "ServerContent",
     "tags": ["roleplay", "fun"],
-    "ignore": [".github/*", ".git/*", "LICENSE", "readme.md", "license"]
+    "ignore": [".github/*", ".git/*", "LICENSE", "README.md"]
 }
