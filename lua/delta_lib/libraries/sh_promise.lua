@@ -14,7 +14,7 @@ function PROMISE.new()
 end
 
 function PROMISE:resolve(...)
-  if self.status ~= PROMISE_PENDING then return end
+  if self.status ~= PROMISE_PENDING then return self end
 
   if #self.resolvers > 0 then
     self:callResolvers(...)
@@ -23,10 +23,11 @@ function PROMISE:resolve(...)
   end
 
   self.status = PROMISE_RESOLVED
+  return self
 end
 
 function PROMISE:reject(...)
-  if self.status ~= PROMISE_PENDING then return end
+  if self.status ~= PROMISE_PENDING then return self end
 
   if #self.rejectors > 0 then
     self:callRejectors(...)
@@ -35,6 +36,7 @@ function PROMISE:reject(...)
   end
 
   self.status = PROMISE_REJECTED
+  return self
 end
 
 function PROMISE:resolved(func)

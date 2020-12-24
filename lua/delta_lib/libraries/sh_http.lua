@@ -1,10 +1,14 @@
 DeltaLib.Http = DeltaLib.Http or {}
 
 function DeltaLib.Http:Request(method, url, body, headers)
+  headers = headers or {}
   local promise = DeltaLib.Promise.new()
 
-  -- Convert body to JSON if it's a table
-  local params = istable(body) and util.TableToJSON(body) or body
+  local params = body
+  if istable(body) then
+    headers["Content-Type"] = "application/json"
+    params = util.TableToJSON(body)
+  end
 
   HTTP({
     method = method,
@@ -13,7 +17,8 @@ function DeltaLib.Http:Request(method, url, body, headers)
     headers = headers,
     type = istable(body) and "application/json",
     success = function(status, body, headers)
-      if headers["Content-Type"] == "application/json" then
+      local isJson = string.find(headers["Content-Type"], "application/json", nil, true) ~= nil
+      if isJson then
         body = util.JSONToTable(body) or body
       end
 

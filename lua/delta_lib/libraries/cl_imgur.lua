@@ -45,9 +45,11 @@ function DeltaLib:DrawImgur(x, y, w, h, color, id, ang)
     if queue[id] then return end -- Stop if it's already downloading
 
     queue[id] = true
-    self:DownloadImgur(id):onResolved(function()
-      queue[id] = nil
-    end)
+    
+    self:DownloadImgur(id)
+      :resolved(function()
+        queue[id] = nil
+      end)
   else
     mat = cache[id]
   end

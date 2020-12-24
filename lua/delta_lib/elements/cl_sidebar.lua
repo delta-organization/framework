@@ -66,6 +66,16 @@ function PANEL:AddTab(name, icon, class, doClickOverride)
 end
 
 function PANEL:SetActive(id)
+  local panel = self.panels[id]
+  if not IsValid(panel) then return end
+
+  local activePnl = self.panels[self.active]
+  if IsValid(activePnl) then
+    activePnl:SetVisible(false)
+  end
+
+  panel:SetVisible(true)
+
   self.active = id
 end
 

@@ -11,14 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Download gmad.exe
-        run: wget https://zeodev.cc/delta/gmad.exe
+      - name: Install 32-bit binaries
+        run: apt install lib32gcc1 lib32stdc++6
 
       - name: Convert to GMA
-        run: gmad.exe create -folder `pwd` -out `pwd`/addon.gma
+        run: ./.github/bin/gmad_linux create -folder $PWD -out "$PWD/addon.gma"
 
-      - name: Download gmpublish.exe
-        run: wget https://zeodev.cc/delta/gmpublish.exe
-
-      - name: Publish
-        run: gmpublish.exe update -id ${{ secrets.WORKSHOP_ADDON_ID }} -addon `pwd`/addon.gma -icon `pwd`/icon.jpg
+      - name: test
+        run: ls -la

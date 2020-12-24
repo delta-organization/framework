@@ -24,8 +24,6 @@ function PANEL:AddTab(name, class, dockRight)
   btn:SetFont("DeltaLib.Navbar.Button")
   btn:SizeToContentsX(20)
 
-  surface.SetFont("DeltaLib.Navbar.Button")
-  btn.textWidth = surface.GetTextSize(name)
   btn.textColor = Color(175, 175, 175)
 
   btn.Paint = function(pnl, w, h)

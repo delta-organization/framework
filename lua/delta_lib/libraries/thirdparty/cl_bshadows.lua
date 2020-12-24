@@ -89,3 +89,5 @@ BSHADOWS.EndShadow = function(intensity, spread, blur, opacity, direction, dista
 
 	cam_End2D()
 end
+
+DeltaLib.Shadows = BSHADOWS
