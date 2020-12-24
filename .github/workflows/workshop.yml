@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install 32-bit binaries
-        run: apt install lib32gcc1 lib32stdc++6
+        run: sudo apt install lib32gcc1 lib32stdc++6
 
       - name: Convert to GMA
         run: ./.github/bin/gmad_linux create -folder $PWD -out "$PWD/addon.gma"
