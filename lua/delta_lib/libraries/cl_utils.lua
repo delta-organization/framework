@@ -12,7 +12,7 @@ function DeltaLib:MakeFont(name, size, weight)
   weight = weight or 500
 
   surface.CreateFont(name, {
-    font = "Raleway Medium",
+    font = "Nunito Sans",
     size = size,
     weight = weight
   })

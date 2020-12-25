@@ -52,8 +52,7 @@ function DeltaLib:LoadFolder(folder, realm)
 end
 
 if SERVER then
-  resource.AddFile("resource/fonts/raleway-variablefont_wght.ttf")
-  resource.AddFile("materials/delta_lib/loading.png")
+  resource.AddFile("resource/fonts/nunitosans-regular.ttf")
 end
 
 DeltaLib:LoadFolder("delta_lib/settings")
