@@ -15,7 +15,7 @@ function DeltaLib.Http:Request(method, url, body, headers)
     url = url,
     body = params,
     headers = headers,
-    type = istable(body) and "application/json",
+    type = headers["Content-Type"],
     success = function(status, body, headers)
       local isJson = string.find(headers["Content-Type"], "application/json", nil, true) ~= nil
       if isJson then

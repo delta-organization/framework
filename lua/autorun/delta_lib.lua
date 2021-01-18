@@ -1,4 +1,4 @@
-DeltaLib = DeltaLib || {}
+DeltaLib = DeltaLib or {}
 
 DeltaLib.REALM_CLIENT = "cl_"
 DeltaLib.REALM_SERVER = "sv_"

@@ -17,11 +17,12 @@ end
 ]]
 
 local math_random = math.random
+local string_gsub = string.gsub
 local string_format = string.format
 
 function DeltaLib:GenerateUUID()
   local template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-  return string.gsub(template, "[xy]", function (c)
+  return string_gsub(template, "[xy]", function (c)
     local v = (c == "x") and math_random(0, 0xf) or math_random(8, 0xb)
     return string_format("%x", v)
   end)

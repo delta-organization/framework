@@ -40,3 +40,14 @@ function DeltaLib:LerpColor(pnl, var, to)
     pnl[var] = lerpColor(frac, from, to)
   end
 end
+
+function DeltaLib:LerpHeight(pnl, to)
+  if not IsValid(pnl) then return end
+
+  local from = pnl:GetTall()
+  local anim = pnl:NewAnimation(.2)
+  anim.Think = function(anim, pnl, frac)
+    frac = ease(frac, 0, 1, 1)
+    pnl:SetTall(Lerp(frac, from, to))
+  end
+end
