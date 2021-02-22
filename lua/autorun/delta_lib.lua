@@ -1,5 +1,7 @@
 DeltaLib = DeltaLib or {}
 
+-- test
+
 DeltaLib.REALM_CLIENT = "cl_"
 DeltaLib.REALM_SERVER = "sv_"
 DeltaLib.REALM_SHARED = "sh_"
