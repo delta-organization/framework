@@ -52,7 +52,7 @@ function DeltaLib:LoadFolder(folder, realm)
 end
 
 if SERVER then
-  resource.AddFile("resource/fonts/nunitosans-regular.ttf")
+  resource.AddFile("resource/fonts/inter.ttf")
 end
 
 DeltaLib:LoadFolder("delta_lib/settings")

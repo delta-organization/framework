@@ -49,6 +49,11 @@ function PANEL:Init()
   end
 end
 
+function PANEL:Open()
+  self:SetAlpha(0)
+  self:AlphaTo(255, 0.2)
+end
+
 function PANEL:SetTitle(title)
   self.header.title:SetText(title)
   self.header.title:SizeToContentsX()

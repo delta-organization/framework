@@ -11,6 +11,12 @@ function DeltaLib:MapTable(tbl, mapFunc)
 	return result
 end
 
+function DeltaLib:ToTitleCase(str)
+	if not isstring(str) then return "" end
+
+	return str[1]:upper() .. str:sub(2, #str)
+end
+
 --[[
 	Function for generating UUIDs
 	 - Credits: https://gist.github.com/jrus/3197011

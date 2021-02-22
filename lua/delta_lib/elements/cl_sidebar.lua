@@ -32,10 +32,6 @@ function PANEL:AddTab(name, icon, class, doClickOverride)
     local textX = icon and 48 or 12
     local isActive = self.active == id
 
-    if isActive then
-      draw.RoundedBox(6, 0, 0, w, h, Color(40, 40, 40))
-    end
-
     if icon then
       DeltaLib:DrawImgur(12, 8, h-16, h-16, ColorAlpha(isActive and DeltaLib.Theme.Accent or pnl.textColor, 150), icon)
     end
@@ -85,6 +81,10 @@ end
 
 function PANEL:SetBody(pnl)
   self.body = pnl
+end
+
+function PANEL:Paint(w, h)
+  draw_RoundedBoxEx(6, 0, 0, w, h, DeltaLib.Theme.Navbar, false, false, true, false)
 end
 
 function PANEL:PerformLayout(w, h)
